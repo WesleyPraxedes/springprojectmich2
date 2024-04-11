@@ -1,6 +1,8 @@
 package com.parkingcontrol.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,13 +18,13 @@ public class ParkingSpotService {
 	@Autowired
 	ParkingSpotRepository parkingSpotRepository;
 
-
+    //Create
     @Transactional
     public ParkingSpotModel save(ParkingSpotModel parkingSpotModel) {
         return parkingSpotRepository.save(parkingSpotModel);
     }
     
-    // Validations
+    // Validations for Create
 	public boolean existsByLicensePlateCar(String licensePlateCar) {
         return parkingSpotRepository.existsByLicensePlateCar(licensePlateCar);
 	}
@@ -34,13 +36,26 @@ public class ParkingSpotService {
 	public boolean existsByApartmentAndBlock(String apartment, String block) {
         return parkingSpotRepository.existsByApartmentAndBlock(apartment, block);
 	}
+	
 
+	// Read - List all
 	public List<ParkingSpotModel> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return parkingSpotRepository.findAll();
 	}
 	
+	// Read - Get one by id
+	public Optional<ParkingSpotModel> findById(UUID id) {
+		return parkingSpotRepository.findById(id);
+	}
+
+	
+	// Update
 	
 	
+	// Delete
+    @Transactional
+    public void delete(ParkingSpotModel parkingSpotModel) {
+		parkingSpotRepository.delete(parkingSpotModel);
+	}
 
 }
