@@ -1,7 +1,6 @@
 package com.parkingcontrol.controllers;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,7 +53,10 @@ public class ParkingSpotController {
     	
     	var parkingSpotModel = new ParkingSpotModel();
         BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-        parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        parkingSpotModel.setRegistrationDate(LocalDateTime.now());
+//        parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        //parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+//        parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.systemDefault()));
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
     }
     
@@ -76,19 +78,48 @@ public class ParkingSpotController {
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
     }
     
+//    Update - Method v1
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
+//                                                    @RequestBody @Valid ParkingSpotDto parkingSpotDto){
+//
+//        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
+//        if (!parkingSpotModelOptional.isPresent()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found.");
+//        }
+//        
+//        ParkingSpotModel parkingSpotModel = parkingSpotModelOptional.get();
+//        
+//        parkingSpotModel.setParkingSpotNumber(parkingSpotDto.getLicensePlateCar());
+//        parkingSpotModel.setLicensePlateCar(parkingSpotDto.getLicensePlateCar());
+//        parkingSpotModel.setModelCar(parkingSpotDto.getModelCar());
+//        parkingSpotModel.setBrandCar(parkingSpotDto.getBrandCar());
+//        parkingSpotModel.setColorCar(parkingSpotDto.getColorCar());
+//        parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
+//        parkingSpotModel.setResponsibleName(parkingSpotDto.getColorCar());
+//        parkingSpotModel.setApartment(parkingSpotDto.getApartment());
+//        parkingSpotModel.setBlock(parkingSpotDto.getBlock());
+//        
+//        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.save(parkingSpotModel));
+//    }
     
-    // Update
+    
+    // Update - Method v2
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
                                                     @RequestBody @Valid ParkingSpotDto parkingSpotDto){
-        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
+        
+    	Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
         if (!parkingSpotModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found.");
         }
+        
         var parkingSpotModel = new ParkingSpotModel();
+        
         BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
         parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
         parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
+        
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.save(parkingSpotModel));
     }
     
