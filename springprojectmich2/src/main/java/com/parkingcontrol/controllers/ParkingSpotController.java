@@ -1,11 +1,13 @@
 package com.parkingcontrol.controllers;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
 
 import com.parkingcontrol.dtos.ParkingSpotDto;
 import com.parkingcontrol.models.ParkingSpotModel;
@@ -53,18 +56,19 @@ public class ParkingSpotController {
     	
     	var parkingSpotModel = new ParkingSpotModel();
         BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-        parkingSpotModel.setRegistrationDate(LocalDateTime.now());
-//        parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
-        //parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-//        parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.systemDefault()));
+        parkingSpotModel.setRegistrationDate(LocalDateTime.now());// Configs timezone in separated class
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
     }
     
 
     // Read - List all
 	@GetMapping
-    public ResponseEntity<List<ParkingSpotModel>> getAllParkingSpots() {
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll());
+    public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+//      System.out.println("App Name: " + appName);
+//      System.out.println("App Port: " + appPort);
+//      System.out.println("App Host: " + appHost);
+//      myBean.method();
+		return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll(pageable));
     }
     
 
@@ -77,31 +81,6 @@ public class ParkingSpotController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
     }
-    
-//    Update - Method v1
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
-//                                                    @RequestBody @Valid ParkingSpotDto parkingSpotDto){
-//
-//        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
-//        if (!parkingSpotModelOptional.isPresent()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found.");
-//        }
-//        
-//        ParkingSpotModel parkingSpotModel = parkingSpotModelOptional.get();
-//        
-//        parkingSpotModel.setParkingSpotNumber(parkingSpotDto.getLicensePlateCar());
-//        parkingSpotModel.setLicensePlateCar(parkingSpotDto.getLicensePlateCar());
-//        parkingSpotModel.setModelCar(parkingSpotDto.getModelCar());
-//        parkingSpotModel.setBrandCar(parkingSpotDto.getBrandCar());
-//        parkingSpotModel.setColorCar(parkingSpotDto.getColorCar());
-//        parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
-//        parkingSpotModel.setResponsibleName(parkingSpotDto.getColorCar());
-//        parkingSpotModel.setApartment(parkingSpotDto.getApartment());
-//        parkingSpotModel.setBlock(parkingSpotDto.getBlock());
-//        
-//        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.save(parkingSpotModel));
-//    }
     
     
     // Update - Method v2
