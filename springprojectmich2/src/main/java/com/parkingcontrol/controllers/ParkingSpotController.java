@@ -64,10 +64,6 @@ public class ParkingSpotController {
     // Read - List all
 	@GetMapping
     public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-//      System.out.println("App Name: " + appName);
-//      System.out.println("App Port: " + appPort);
-//      System.out.println("App Host: " + appHost);
-//      myBean.method();
 		return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll(pageable));
     }
     
