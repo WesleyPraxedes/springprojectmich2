@@ -25,7 +25,7 @@ import com.parkingcontrol.dtos.ParkingSpotDto;
 import com.parkingcontrol.models.ParkingSpotModel;
 import com.parkingcontrol.services.ParkingSpotService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 
 @RestController
