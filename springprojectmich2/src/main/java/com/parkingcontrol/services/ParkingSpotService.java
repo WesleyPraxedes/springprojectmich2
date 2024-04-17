@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.parkingcontrol.models.ParkingSpotModel;
 import com.parkingcontrol.repositories.ParkingSpotRepository;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 
 @Service
 public class ParkingSpotService {
