@@ -15,6 +15,8 @@ public class Application {
 		System.out.println(new BCryptPasswordEncoder().encode("senha123"));
 	}
 	
+	
+	
 	@GetMapping("/")
 	public String index(){
 		return "Olá Mundo - Parking Control!";
