@@ -13,9 +13,7 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 		System.out.println(new BCryptPasswordEncoder().encode("senha123"));
-	}
-	
-	
+	}	
 	
 	@GetMapping("/")
 	public String index(){
