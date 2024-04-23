@@ -9,15 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    final UserDetailsServiceImpl userDetailsService;
-
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -25,22 +17,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .httpBasic()
             .and()
             .authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .csrf().disable();
+            .anyRequest().authenticated();
     }
     
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	auth. inMemoryAuthentication() 
 		    .withUser("michelli")
-		    .password(passwordEncoder().encode("607080"))
+		    .password("607080")
 		    .roles(" ADMIN");
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 }
